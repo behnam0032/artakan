@@ -579,10 +579,11 @@
     revealEls.forEach(el => el.classList.add('is-visible'));
   }
 
-  // ---------- Scroll-driven colorization: sketch → warm color as you scroll ----------
-  const SKETCH_RGB = [26, 26, 26];   // #1A1A1A pencil
-  const LIVE_RGB   = [181, 84, 31];  // #B5541F warm terracotta accent
+  // ---------- Scroll-driven colorization: sketch → color, synced to the hero's own scroll distance ----------
+  const SKETCH_RGB = [26, 26, 26];    // #1A1A1A pencil
+  const LIVE_RGB   = [30, 66, 130];   // #1E4282 — a chic, modern cobalt / blueprint blue
   let siteColorProgress = 0;
+  const heroEl = document.querySelector('.hero');
 
   function lerpChannel(a, b, t){ return Math.round(a + (b - a) * t); }
   function currentAccentColor(t){
@@ -593,8 +594,13 @@
   }
   function updateScrollColor(){
     const vh = window.innerHeight || 800;
-    // fully colorized by about 1.15 viewport-heights of scrolling
-    const t = Math.min(Math.max(window.scrollY / (vh * 1.15), 0), 1);
+    let t = 1;
+    if (heroEl){
+      const rect = heroEl.getBoundingClientRect();
+      // 0 while the hero is fully in view, 1 exactly once it has scrolled a full viewport-height past
+      const scrolledPast = Math.min(Math.max(-rect.top, 0), vh);
+      t = scrolledPast / vh;
+    }
     siteColorProgress = t;
     document.documentElement.style.setProperty('--accent', currentAccentColor(t));
   }
@@ -833,11 +839,11 @@
 
     const clock = new THREE.Clock();
 
-    // colors the wireframe shifts between: pencil sketch → warm terracotta accent
+    // colors the wireframe shifts between: pencil sketch → chic cobalt / blueprint blue
     const darkSketchColor = new THREE.Color(pencilDark);
-    const darkLiveColor   = new THREE.Color(0xB5541F);
+    const darkLiveColor   = new THREE.Color(0x1E4282);
     const midSketchColor  = new THREE.Color(pencilMid);
-    const midLiveColor    = new THREE.Color(0xD98247);
+    const midLiveColor    = new THREE.Color(0x4A73C4);
     const mixedDark = new THREE.Color();
     const mixedMid  = new THREE.Color();
 
