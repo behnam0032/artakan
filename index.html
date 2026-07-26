@@ -800,8 +800,8 @@
       requestAnimationFrame(animate);
       const t = clock.getElapsedTime();
 
-      targetRotY += ((mouseX * 0.4) - targetRotY) * 0.05; 
-      targetRotX += ((mouseY * 0.25) - targetRotX) * 0.05; 
+      targetRotY += ((mouseX * 0.15) - targetRotY) * 0.03;
+      targetRotX += ((mouseY * 0.08) - targetRotX) * 0.03;
 
       villaGroup.rotation.y = targetRotY;
       villaGroup.rotation.x = targetRotX;
