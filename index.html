@@ -12,17 +12,17 @@
 
 <style>
   :root{
-    --bg:        #15140F;
-    --bg-alt:    #1C1A13;
-    --panel:     #211E16;
-    --stone:     #EDE6D6;
-    --ink:       #F3EFE4;
-    --ink-dim:   #A9A192;
-    --ink-dimmer:#78715F;
-    --brass:     #B4904F;
-    --brass-2:   #D8B978;
-    --line:      rgba(180,144,79,0.22);
-    --line-soft: rgba(243,239,228,0.08);
+    --bg:        #0F1719;
+    --bg-alt:    #15201F;
+    --panel:     #1B2827;
+    --stone:     #E6E1D3;
+    --ink:       #ECF1EF;
+    --ink-dim:   #92A6A2;
+    --ink-dimmer:#5B6E6B;
+    --brass:     #3FAFA4;
+    --brass-2:   #79DCCB;
+    --line:      rgba(63,175,164,0.22);
+    --line-soft: rgba(236,241,239,0.08);
     --radius:    2px;
   }
 
@@ -278,9 +278,9 @@
   }
   .mood-card span{ font-size:13px; color:var(--ink-dim); position:relative; z-index:2; }
   .mood-card .swatch{ position:absolute; inset:0; }
-  .mood-card:nth-child(1) .swatch{ background:linear-gradient(160deg, #2A2620 0%, #1C1A13 60%, #B4904F 140%); }
-  .mood-card:nth-child(2) .swatch{ background:linear-gradient(160deg, #3A362B 0%, #211E16 55%, #78715F 150%); }
-  .mood-card:nth-child(3) .swatch{ background:linear-gradient(160deg, #221F17 0%, #15140F 60%, #D8B978 160%); }
+  .mood-card:nth-child(1) .swatch{ background:linear-gradient(160deg, #1B2928 0%, #15201F 60%, #3FAFA4 140%); }
+  .mood-card:nth-child(2) .swatch{ background:linear-gradient(160deg, #263433 0%, #1B2827 55%, #5B6E6B 150%); }
+  .mood-card:nth-child(3) .swatch{ background:linear-gradient(160deg, #182322 0%, #0F1719 60%, #79DCCB 160%); }
   .mood-card::after{
     content:""; position:absolute; inset:0;
     background:linear-gradient(0deg, rgba(0,0,0,0.55), transparent 60%);
@@ -426,13 +426,13 @@
     </div>
     <div class="intro-figure" data-reveal>
       <svg viewBox="0 0 420 480" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="60" y="60" width="300" height="360" stroke="#4A4432" stroke-width="1"/>
-        <rect x="90" y="120" width="120" height="90" stroke="#B4904F" stroke-width="1.4"/>
-        <rect x="230" y="120" width="100" height="150" stroke="#78715F" stroke-width="1"/>
-        <rect x="90" y="240" width="140" height="120" stroke="#78715F" stroke-width="1"/>
-        <line x1="60" y1="300" x2="360" y2="300" stroke="#4A4432" stroke-width="1"/>
-        <line x1="210" y1="60" x2="210" y2="420" stroke="#4A4432" stroke-width="1"/>
-        <circle cx="210" cy="300" r="4" fill="#D8B978"/>
+        <rect x="60" y="60" width="300" height="360" stroke="#324443" stroke-width="1"/>
+        <rect x="90" y="120" width="120" height="90" stroke="#3FAFA4" stroke-width="1.4"/>
+        <rect x="230" y="120" width="100" height="150" stroke="#5B6E6B" stroke-width="1"/>
+        <rect x="90" y="240" width="140" height="120" stroke="#5B6E6B" stroke-width="1"/>
+        <line x1="60" y1="300" x2="360" y2="300" stroke="#324443" stroke-width="1"/>
+        <line x1="210" y1="60" x2="210" y2="420" stroke="#324443" stroke-width="1"/>
+        <circle cx="210" cy="300" r="4" fill="#79DCCB"/>
       </svg>
     </div>
   </div>
@@ -591,7 +591,7 @@
     }
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x15140F, 0.02);
+    scene.fog = new THREE.FogExp2(0x0F1719, 0.02);
 
     // Front elevation view: camera sits almost straight-on, slightly raised.
     const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -608,10 +608,10 @@
     resize();
     window.addEventListener('resize', resize);
 
-    const brass = 0xC9A15E;
-    const brassDim = 0x6B5A38;
-    const glassLine = 0x8A8062;
-    const waterEdge = 0xC7D6D2;
+    const brass = 0x4FC2B6;
+    const brassDim = 0x1F4744;
+    const glassLine = 0x5E7C79;
+    const waterEdge = 0xDCEAE7;
 
     const group = new THREE.Group();
     scene.add(group);
@@ -662,11 +662,13 @@
     addBlock(-2.0, 4.33, 0.3, 3.8, 0.14, 3.0, { color:brassDim, opacity:0.7 });
 
     // terrace slab (roof of ground block / floor of covered terrace), cantilevers toward the pool
-    const terrace = addBlock(-2.3, 2.375, 2.2, 5.6, 0.14, 2.4, { color:brass, opacity:0.9 });
+    // and runs all the way across to the right tower — this shared datum line is what
+    // ties the two otherwise separate volumes into a single composition.
+    const terrace = addBlock(-1.6, 2.375, 2.2, 7.8, 0.14, 2.4, { color:brass, opacity:0.9 });
 
     // slim pilotis columns holding the terrace's outer edge
     const terraceFrontZ = terrace.z + terrace.d / 2;
-    [-4.6, -3.2, -1.8, -0.5].forEach((x) => {
+    [-4.9, -3.2, -1.6, 0.0, 1.6].forEach((x) => {
       const pts = [ new THREE.Vector3(x, 0, terraceFrontZ), new THREE.Vector3(x, 2.3, terraceFrontZ) ];
       const geo = new THREE.BufferGeometry().setFromPoints(pts);
       const mat = new THREE.LineBasicMaterial({ color:brassDim, transparent:true, opacity:0.7 });
@@ -677,7 +679,7 @@
     const poolW = 6.0, poolD = 3.4;
     const poolX = -2.3, poolZ = 6.0, poolY = 0.03;
     const poolGeo = new THREE.PlaneGeometry(poolW, poolD);
-    const poolMat = new THREE.MeshBasicMaterial({ color:0x5C7472, transparent:true, opacity:0.22, side:THREE.DoubleSide });
+    const poolMat = new THREE.MeshBasicMaterial({ color:0x1F4744, transparent:true, opacity:0.28, side:THREE.DoubleSide });
     const poolMesh = new THREE.Mesh(poolGeo, poolMat);
     poolMesh.rotation.x = -Math.PI / 2;
     poolMesh.position.set(poolX, poolY, poolZ);
@@ -702,12 +704,12 @@
     }
 
     /* ---- Right volume: quiet, simple tower — kept plain so it sits behind the headline ---- */
-    const rightBlock = addBlock(3.5, 2.3, -1.6, 2.6, 4.6, 3.0, { opacity:0.55 });
+    const rightBlock = addBlock(2.9, 2.3, -1.6, 2.6, 4.6, 3.0, { opacity:0.55 });
     addMullions(rightBlock, 3, 0.2);
-    addBlock(3.5, 4.68, -1.6, 3.0, 0.14, 3.4, { color:brassDim, opacity:0.5 });
+    addBlock(2.9, 4.68, -1.6, 3.0, 0.14, 3.4, { color:brassDim, opacity:0.5 });
 
     /* ---- Ground plane (lawn) ---- */
-    const grid = new THREE.GridHelper(34, 34, brassDim, 0x2A2620);
+    const grid = new THREE.GridHelper(34, 34, brassDim, 0x162220);
     grid.position.y = 0;
     grid.material.transparent = true;
     grid.material.opacity = 0.16;
