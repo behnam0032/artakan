@@ -590,12 +590,13 @@
     }
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x0F1719, 0.035);
+    // کاهش چگالی مه برای دیده شدن بهتر اجزا در فاصله دورتر
+    scene.fog = new THREE.FogExp2(0x0F1719, 0.025);
 
-    // Better camera angle for a villa (3/4 view)
+    // 1. زوم‌اوت: دوربین عقب‌تر و کمی بالاتر برده شد
     const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(6.5, 4.5, 11);
-    camera.lookAt(0, 1.8, 0);
+    camera.position.set(8, 5.5, 14); // قبلاً (6.5, 4.5, 11) بود
+    camera.lookAt(0, 1.5, 0);
 
     function resize(){
       const w = window.innerWidth, h = window.innerHeight;
@@ -632,10 +633,11 @@
 
       // Wireframe edges
       const edges = new THREE.EdgesGeometry(geo);
+      // 2. خطوط پررنگ‌تر: افزایش پیش‌فرض شفافیت خطوط
       const lineMat = new THREE.LineBasicMaterial({ 
         color: opts.color || brass, 
         transparent:true, 
-        opacity: opts.lineOpacity !== undefined ? opts.lineOpacity : 0.7 
+        opacity: opts.lineOpacity !== undefined ? opts.lineOpacity : 0.95 // قبلاً 0.7 بود
       });
       const lines = new THREE.LineSegments(edges, lineMat);
       group.add(lines);
@@ -670,26 +672,27 @@
       }
 
       const geo = new THREE.BufferGeometry().setFromPoints(pts);
-      const mat = new THREE.LineBasicMaterial({ color: glassLine, transparent:true, opacity: 0.4 });
+      // 2. خطوط پررنگ‌تر: افزایش شفافیت خطوط پنجره‌ها
+      const mat = new THREE.LineBasicMaterial({ color: glassLine, transparent:true, opacity: 0.7 }); // قبلاً 0.4 بود
       villaGroup.add(new THREE.LineSegments(geo, mat));
     }
 
-    /* ---- 1. Main Ground Floor Volume (Solid back, glass front) ---- */
-    const groundFloor = addBlock(-0.5, 1.5, -1, 7, 3, 5, { opacity: 0.3 });
-    addMullions(groundFloor, 2, 4, 'z'); // Front glass facade
+    /* ---- 1. Main Ground Floor Volume ---- */
+    const groundFloor = addBlock(-0.5, 1.5, -1, 7, 3, 5, { opacity: 0.3, lineOpacity: 0.9 });
+    addMullions(groundFloor, 2, 4, 'z'); 
 
     /* ---- 2. Upper Floor Cantilever Volume ---- */
-    const upperFloor = addBlock(0.5, 3.8, -0.5, 5, 2.8, 5.5, { opacity: 0.2, color: brassBright, lineOpacity: 0.8 });
-    addMullions(upperFloor, 2, 3, 'z'); // Front glass facade
+    const upperFloor = addBlock(0.5, 3.8, -0.5, 5, 2.8, 5.5, { opacity: 0.2, color: brassBright, lineOpacity: 1.0 });
+    addMullions(upperFloor, 2, 3, 'z'); 
     
     // Roof slab
-    addBlock(0.5, 5.27, -0.5, 5.4, 0.15, 5.9, { opacity: 0.4, color: brass, lineOpacity: 0.9 });
+    addBlock(0.5, 5.27, -0.5, 5.4, 0.15, 5.9, { opacity: 0.4, color: brass, lineOpacity: 0.95 });
 
-    /* ---- 3. Covered Patio / Pergola under cantilever ---- */
-    const patioFloor = addBlock(-1.5, 0.1, 2.5, 6, 0.1, 3, { opacity: 0.15, color: 0x5B6E6B });
+    /* ---- 3. Covered Patio / Pergola ---- */
+    const patioFloor = addBlock(-1.5, 0.1, 2.5, 6, 0.1, 3, { opacity: 0.15, color: 0x5B6E6B, lineOpacity: 0.8 });
     // Pergola slats
     for(let i=0; i<5; i++){
-      addBlock(-1.5, 3.0, 1.0 + (i * 0.8), 5.5, 0.12, 0.15, { opacity: 0.5, color: brass, lineOpacity: 0.6 });
+      addBlock(-1.5, 3.0, 1.0 + (i * 0.8), 5.5, 0.12, 0.15, { opacity: 0.5, color: brass, lineOpacity: 0.9 });
     }
     // Patio columns
     const colPts = [
@@ -697,13 +700,12 @@
       new THREE.Vector3(1.0, 0, 4.0), new THREE.Vector3(1.0, 3.0, 4.0)
     ];
     const colGeo = new THREE.BufferGeometry().setFromPoints(colPts);
-    villaGroup.add(new THREE.LineSegments(colGeo, new THREE.LineBasicMaterial({ color: brass, transparent:true, opacity: 0.5 })));
+    villaGroup.add(new THREE.LineSegments(colGeo, new THREE.LineBasicMaterial({ color: brass, transparent:true, opacity: 0.8 })));
 
     /* ---- 4. Modern Pool ---- */
     const poolW = 5, poolD = 3.5;
     const poolX = 1.5, poolZ = 5.5, poolY = 0.05;
     
-    // Pool water surface
     const poolGeo = new THREE.PlaneGeometry(poolW, poolD);
     const poolMat = new THREE.MeshBasicMaterial({ color: 0x3FAFA4, transparent:true, opacity: 0.15, side: THREE.DoubleSide });
     const poolMesh = new THREE.Mesh(poolGeo, poolMat);
@@ -711,7 +713,6 @@
     poolMesh.position.set(poolX, poolY, poolZ);
     villaGroup.add(poolMesh);
 
-    // Pool edges (glowing)
     const poolEdgePts = [
       new THREE.Vector3(poolX - poolW/2, poolY, poolZ - poolD/2),
       new THREE.Vector3(poolX + poolW/2, poolY, poolZ - poolD/2),
@@ -721,10 +722,9 @@
     ];
     villaGroup.add(new THREE.Line(
       new THREE.BufferGeometry().setFromPoints(poolEdgePts),
-      new THREE.LineBasicMaterial({ color: brassBright, transparent:true, opacity: 0.8 })
+      new THREE.LineBasicMaterial({ color: brassBright, transparent:true, opacity: 1.0 }) // قبلاً 0.8 بود
     ));
 
-    // Pool steps
     const stepPts = [
       new THREE.Vector3(poolX - poolW/2 + 0.5, poolY, poolZ - poolD/2 + 0.5),
       new THREE.Vector3(poolX - poolW/2 + 0.5, poolY - 0.15, poolZ - poolD/2 + 0.5),
@@ -733,13 +733,12 @@
     ];
     villaGroup.add(new THREE.Line(
       new THREE.BufferGeometry().setFromPoints(stepPts),
-      new THREE.LineBasicMaterial({ color: glassLine, transparent:true, opacity: 0.6 })
+      new THREE.LineBasicMaterial({ color: glassLine, transparent:true, opacity: 0.8 })
     ));
 
     /* ---- 5. Abstract Landscape (Trees) ---- */
     function addTree(x, z, scale = 1){
       const treeGroup = new THREE.Group();
-      // Trunk
       const trunkGeo = new THREE.CylinderGeometry(0.15 * scale, 0.2 * scale, 1.5 * scale, 6);
       const trunkMat = new THREE.MeshBasicMaterial({ color: 0x5B6E6B, transparent:true, opacity: 0.4 });
       const trunk = new THREE.Mesh(trunkGeo, trunkMat);
@@ -747,9 +746,8 @@
       treeGroup.add(trunk);
       
       const trunkEdges = new THREE.EdgesGeometry(trunkGeo);
-      treeGroup.add(new THREE.LineSegments(trunkEdges, new THREE.LineBasicMaterial({ color: glassLine, transparent:true, opacity: 0.5 })));
+      treeGroup.add(new THREE.LineSegments(trunkEdges, new THREE.LineBasicMaterial({ color: glassLine, transparent:true, opacity: 0.7 }))); // پررنگ‌تر
 
-      // Foliage (Cone)
       const foliageGeo = new THREE.ConeGeometry(1.2 * scale, 2.5 * scale, 6);
       const foliageMat = new THREE.MeshBasicMaterial({ color: 0x1B2827, transparent:true, opacity: 0.3 });
       const foliage = new THREE.Mesh(foliageGeo, foliageMat);
@@ -757,7 +755,7 @@
       treeGroup.add(foliage);
 
       const foliageEdges = new THREE.EdgesGeometry(foliageGeo);
-      treeGroup.add(new THREE.LineSegments(foliageEdges, new THREE.LineBasicMaterial({ color: brass, transparent:true, opacity: 0.4 })));
+      treeGroup.add(new THREE.LineSegments(foliageEdges, new THREE.LineBasicMaterial({ color: brass, transparent:true, opacity: 0.7 }))); // پررنگ‌تر
 
       treeGroup.position.set(x, 0, z);
       villaGroup.add(treeGroup);
@@ -790,14 +788,13 @@
       requestAnimationFrame(animate);
       const t = clock.getElapsedTime();
 
-      // Smooth parallax based on mouse
-      targetRotY += ((mouseX * 0.15) - targetRotY) * 0.03;
-      targetRotX += ((mouseY * 0.08) - targetRotX) * 0.03;
+      // 3. حرکت بیشتر با موس: افزایش ضرایب چرخش برای واکنش قوی‌تر
+      targetRotY += ((mouseX * 0.4) - targetRotY) * 0.05; // قبلاً 0.15 و 0.03 بود
+      targetRotX += ((mouseY * 0.25) - targetRotX) * 0.05; // قبلاً 0.08 و 0.03 بود
 
       villaGroup.rotation.y = targetRotY;
       villaGroup.rotation.x = targetRotX;
       
-      // Subtle floating animation
       if (!reduceMotion) {
         villaGroup.position.y = Math.sin(t * 0.3) * 0.04;
       }
