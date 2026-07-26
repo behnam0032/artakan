@@ -151,7 +151,7 @@
     position:relative; z-index:3;
     width:100%;
     padding-bottom:100px;
-    display:flex; justify-content:flex-end;
+    display:flex; justify-content:flex-start;
   }
   .hero-content{
     max-width:620px;
@@ -173,7 +173,7 @@
     max-width:520px;
     margin-bottom:38px;
   }
-  .hero-actions{ display:flex; gap:16px; flex-wrap:wrap; justify-content:flex-end; }
+  .hero-actions{ display:flex; gap:16px; flex-wrap:wrap; justify-content:flex-start; }
 
   .scroll-cue{
     position:absolute; bottom:34px; left:40px; z-index:3;
@@ -529,7 +529,7 @@
         </div>
         <div class="contact-row">
           <span class="label">تلفن</span>
-          <span class="value"><a href="tel:+989176040069">09176040069</a></span>
+          <span class="value"><a href="tel:+982100000000">۰۲۱&nbsp;&#8211;&nbsp;xxxx&nbsp;xxxx</a></span>
         </div>
       </div>
     </div>
@@ -591,11 +591,12 @@
     }
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x15140F, 0.028);
+    scene.fog = new THREE.FogExp2(0x15140F, 0.02);
 
-    const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(6.5, 5, 11);
-    camera.lookAt(0, 1.5, 0);
+    // Front elevation view: camera sits almost straight-on, slightly raised.
+    const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0.6, 2.9, 14.5);
+    camera.lookAt(0.2, 2.1, 0);
 
     function resize(){
       const w = window.innerWidth, h = window.innerHeight;
@@ -609,53 +610,108 @@
 
     const brass = 0xC9A15E;
     const brassDim = 0x6B5A38;
+    const glassLine = 0x8A8062;
+    const waterEdge = 0xC7D6D2;
 
     const group = new THREE.Group();
     scene.add(group);
 
-    // Stepped massing: stacked offset boxes forming an abstract tower, edges only + faint glass faces
-    const blocks = [
-      { w:3.6, h:0.9, d:3.6, x:0,   y:0.45, z:0 },
-      { w:2.9, h:1.3, d:2.9, x:0.3, y:1.55, z:-0.2 },
-      { w:2.2, h:1.7, d:2.2, x:-0.4,y:2.85, z:0.3 },
-      { w:1.5, h:1.9, d:1.5, x:0.2, y:4.65, z:-0.1 },
-    ];
-
-    blocks.forEach(b => {
-      const geo = new THREE.BoxGeometry(b.w, b.h, b.d);
-      const edges = new THREE.EdgesGeometry(geo);
-      const lineMat = new THREE.LineBasicMaterial({ color: brass, transparent:true, opacity:0.85 });
-      const lineMesh = new THREE.LineSegments(edges, lineMat);
-      lineMesh.position.set(b.x, b.y, b.z);
-      group.add(lineMesh);
-
-      const faceMat = new THREE.MeshBasicMaterial({ color: 0xEDE6D6, transparent:true, opacity:0.035, side:THREE.DoubleSide });
-      const faceMesh = new THREE.Mesh(geo, faceMat);
-      faceMesh.position.copy(lineMesh.position);
-      group.add(faceMesh);
-    });
-
-    // thin vertical structural lines
-    for (let i = 0; i < 4; i++){
-      const angle = (i / 4) * Math.PI * 2;
-      const r = 1.9;
-      const points = [
-        new THREE.Vector3(Math.cos(angle)*r, 0, Math.sin(angle)*r),
-        new THREE.Vector3(Math.cos(angle)*r*0.5, 5.4, Math.sin(angle)*r*0.5),
-      ];
-      const geo = new THREE.BufferGeometry().setFromPoints(points);
-      const mat = new THREE.LineBasicMaterial({ color: brassDim, transparent:true, opacity:0.5 });
-      group.add(new THREE.Line(geo, mat));
+    function edgesMesh(geo, color, opacity){
+      const mat = new THREE.LineBasicMaterial({ color, transparent:true, opacity });
+      return new THREE.LineSegments(new THREE.EdgesGeometry(geo), mat);
+    }
+    function faceMesh(geo, opacity){
+      const mat = new THREE.MeshBasicMaterial({ color:0xEDE6D6, transparent:true, opacity, side:THREE.DoubleSide });
+      return new THREE.Mesh(geo, mat);
+    }
+    function addBlock(x, y, z, w, h, d, opts){
+      opts = opts || {};
+      const geo = new THREE.BoxGeometry(w, h, d);
+      const lines = edgesMesh(geo, opts.color || brass, opts.opacity !== undefined ? opts.opacity : 0.85);
+      lines.position.set(x, y, z);
+      group.add(lines);
+      const face = faceMesh(geo, 0.035);
+      face.position.set(x, y, z);
+      group.add(face);
+      return { x, y, z, w, h, d };
+    }
+    function addMullions(block, count, colorOpacity){
+      // vertical glazing lines on the front face of a block
+      const frontZ = block.z + block.d / 2 + 0.015;
+      const halfW = block.w / 2;
+      const topY = block.y + block.h / 2;
+      const botY = block.y - block.h / 2;
+      const pts = [];
+      for (let i = 1; i < count; i++){
+        const x = block.x - halfW + (block.w / count) * i;
+        pts.push(new THREE.Vector3(x, botY, frontZ), new THREE.Vector3(x, topY, frontZ));
+      }
+      const geo = new THREE.BufferGeometry().setFromPoints(pts);
+      const mat = new THREE.LineBasicMaterial({ color:glassLine, transparent:true, opacity: colorOpacity || 0.4 });
+      group.add(new THREE.LineSegments(geo, mat));
     }
 
-    // ground grid
-    const grid = new THREE.GridHelper(24, 24, brassDim, 0x2A2620);
+    /* ---- Left volume: main living block, cantilevered upper floor, terrace on pilotis ---- */
+    const groundBlock = addBlock(-2.5, 1.15, -1, 5.0, 2.3, 4.0);
+    addMullions(groundBlock, 6, 0.35);
+
+    const upperBlock = addBlock(-2.0, 3.3, 0.3, 3.4, 1.9, 2.6);
+    addMullions(upperBlock, 5, 0.35);
+
+    // roof slab over upper block
+    addBlock(-2.0, 4.33, 0.3, 3.8, 0.14, 3.0, { color:brassDim, opacity:0.7 });
+
+    // terrace slab (roof of ground block / floor of covered terrace), cantilevers toward the pool
+    const terrace = addBlock(-2.3, 2.375, 2.2, 5.6, 0.14, 2.4, { color:brass, opacity:0.9 });
+
+    // slim pilotis columns holding the terrace's outer edge
+    const terraceFrontZ = terrace.z + terrace.d / 2;
+    [-4.6, -3.2, -1.8, -0.5].forEach((x) => {
+      const pts = [ new THREE.Vector3(x, 0, terraceFrontZ), new THREE.Vector3(x, 2.3, terraceFrontZ) ];
+      const geo = new THREE.BufferGeometry().setFromPoints(pts);
+      const mat = new THREE.LineBasicMaterial({ color:brassDim, transparent:true, opacity:0.7 });
+      group.add(new THREE.Line(geo, mat));
+    });
+
+    /* ---- Pool: flat in-ground plane just in front of the terrace ---- */
+    const poolW = 6.0, poolD = 3.4;
+    const poolX = -2.3, poolZ = 6.0, poolY = 0.03;
+    const poolGeo = new THREE.PlaneGeometry(poolW, poolD);
+    const poolMat = new THREE.MeshBasicMaterial({ color:0x5C7472, transparent:true, opacity:0.22, side:THREE.DoubleSide });
+    const poolMesh = new THREE.Mesh(poolGeo, poolMat);
+    poolMesh.rotation.x = -Math.PI / 2;
+    poolMesh.position.set(poolX, poolY, poolZ);
+    group.add(poolMesh);
+
+    const poolEdgePts = [
+      new THREE.Vector3(poolX - poolW/2, poolY, poolZ - poolD/2),
+      new THREE.Vector3(poolX + poolW/2, poolY, poolZ - poolD/2),
+      new THREE.Vector3(poolX + poolW/2, poolY, poolZ + poolD/2),
+      new THREE.Vector3(poolX - poolW/2, poolY, poolZ + poolD/2),
+      new THREE.Vector3(poolX - poolW/2, poolY, poolZ - poolD/2),
+    ];
+    const poolEdgeGeo = new THREE.BufferGeometry().setFromPoints(poolEdgePts);
+    group.add(new THREE.Line(poolEdgeGeo, new THREE.LineBasicMaterial({ color:waterEdge, transparent:true, opacity:0.45 })));
+
+    // a few gentle ripple lines across the pool
+    for (let i = 1; i < 4; i++){
+      const z = poolZ - poolD/2 + (poolD/4) * i;
+      const pts = [ new THREE.Vector3(poolX - poolW/2 + 0.3, poolY, z), new THREE.Vector3(poolX + poolW/2 - 0.3, poolY, z) ];
+      const geo = new THREE.BufferGeometry().setFromPoints(pts);
+      group.add(new THREE.Line(geo, new THREE.LineBasicMaterial({ color:waterEdge, transparent:true, opacity:0.12 })));
+    }
+
+    /* ---- Right volume: quiet, simple tower — kept plain so it sits behind the headline ---- */
+    const rightBlock = addBlock(3.5, 2.3, -1.6, 2.6, 4.6, 3.0, { opacity:0.55 });
+    addMullions(rightBlock, 3, 0.2);
+    addBlock(3.5, 4.68, -1.6, 3.0, 0.14, 3.4, { color:brassDim, opacity:0.5 });
+
+    /* ---- Ground plane (lawn) ---- */
+    const grid = new THREE.GridHelper(34, 34, brassDim, 0x2A2620);
     grid.position.y = 0;
     grid.material.transparent = true;
-    grid.material.opacity = 0.18;
+    grid.material.opacity = 0.16;
     scene.add(grid);
-
-    group.position.y = -1.2;
 
     let targetRotY = 0, targetRotX = 0;
     let mouseX = 0, mouseY = 0;
@@ -671,11 +727,13 @@
       requestAnimationFrame(animate);
       const t = clock.getElapsedTime();
 
-      targetRotY += ((mouseX * 0.6) - targetRotY) * 0.02;
-      targetRotX += ((mouseY * 0.2) - targetRotX) * 0.02;
+      // Kept deliberately subtle: this is a front elevation, not a spinning showpiece.
+      targetRotY += ((mouseX * 0.12) - targetRotY) * 0.02;
+      targetRotX += ((mouseY * 0.05) - targetRotX) * 0.02;
 
-      group.rotation.y = (reduceMotion ? 0 : t * 0.06) + targetRotY;
-      group.rotation.x = targetRotX * 0.3;
+      group.rotation.y = targetRotY;
+      group.rotation.x = targetRotX;
+      group.position.y = reduceMotion ? 0 : Math.sin(t * 0.4) * 0.03;
 
       renderer.render(scene, camera);
     }
