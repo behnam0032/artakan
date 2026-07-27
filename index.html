@@ -12,15 +12,14 @@
 
 <style>
   :root{
-    /* پالت رنگی کاغذ و مداد طراحی */
-    --bg:        #F9F7F1; /* رنگ کاغذ کرم روشن */
-    --bg-alt:    #F0EDE5; /* کاغذ کمی تیره‌تر برای کارت‌ها */
+    --bg:        #F9F7F1;
+    --bg-alt:    #F0EDE5;
     --panel:     #E8E4DB;
-    --ink:       #2C2C2C; /* رنگ مداد زغالی پررنگ */
-    --ink-dim:   #555555; /* مداد خاکستری متوسط */
-    --ink-dimmer:#888888; /* خطوط محو طراحی */
-    --accent:    #1A1A1A; /* مشکی مداد برای تاکید */
-    --line:      rgba(44, 44, 44, 0.15); /* خطوط راهنمای محو */
+    --ink:       #2C2C2C;
+    --ink-dim:   #555555;
+    --ink-dimmer:#888888;
+    --accent:    #1A1A1A;
+    --line:      rgba(44, 44, 44, 0.15);
     --line-soft: rgba(44, 44, 44, 0.08);
     --radius:    2px;
   }
@@ -30,8 +29,7 @@
 
   body{
     background-color: var(--bg);
-    /* بافت ظریف کاغذ */
-    background-image: radial-gradient(#d4d0c8 1px, transparent 1px);
+    background-image: radial-gradient(var(--line-soft) 1px, transparent 1px);
     background-size: 24px 24px;
     color: var(--ink);
     font-family: 'Vazirmatn', sans-serif;
@@ -39,6 +37,7 @@
     line-height: 1.8;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.5s ease;
   }
 
   ::selection{ background: var(--ink); color: var(--bg); }
@@ -67,7 +66,7 @@
   .eyebrow::before{
     content: "";
     width: 26px; height: 2px;
-    background: var(--accent);
+    background: var(--ink);
     display: inline-block;
   }
 
@@ -94,7 +93,7 @@
     justify-content: space-between;
   }
   .brand{ display: flex; align-items: center; gap: 12px; }
-  .brand .mark{ width: 34px; height: 34px; color: var(--accent); flex-shrink: 0; }
+  .brand .mark{ width: 34px; height: 34px; color: var(--ink); flex-shrink: 0; }
   .brand .type{ display: flex; flex-direction: column; line-height: 1.15; }
   .brand .type strong{ font-size: 19px; font-weight: 800; letter-spacing: 0.01em; color: var(--ink); }
   .brand .type span{ font-size: 11px; color: var(--ink-dim); letter-spacing: 0.08em; }
@@ -143,7 +142,6 @@
   .hero::before{
     content: "";
     position: absolute; inset: 0;
-    /* گرادیان برای محو شدن مدل در کاغذ */
     background: linear-gradient(180deg, rgba(249,247,241,0) 0%, rgba(249,247,241,0.6) 60%, var(--bg) 100%);
     z-index: 2;
     pointer-events: none;
@@ -166,9 +164,9 @@
   }
   .hero-content h1 em{
     font-style: normal;
-    color: var(--accent);
+    color: var(--ink-dim);
     text-decoration: underline;
-    text-decoration-color: var(--accent);
+    text-decoration-color: var(--ink-dimmer);
     text-underline-offset: 6px;
   }
   .hero-content p{
@@ -225,7 +223,7 @@
     background: var(--bg);
     padding: 28px 26px;
   }
-  .principle .num{ font-size: 12px; color: var(--accent); letter-spacing: 0.1em; display: block; margin-bottom: 14px; font-weight: 700; }
+  .principle .num{ font-size: 12px; color: var(--ink-dimmer); letter-spacing: 0.1em; display: block; margin-bottom: 14px; font-weight: 700; }
   .principle h4{ font-size: 16px; margin-bottom: 10px; }
   .principle p{ font-size: 14px; color: var(--ink-dim); }
 
@@ -243,7 +241,7 @@
     transition: background .4s ease;
   }
   .service:hover{ background: var(--bg-alt); }
-  .service .icon{ width: 40px; height: 40px; color: var(--accent); margin-bottom: 26px; }
+  .service .icon{ width: 40px; height: 40px; color: var(--ink); margin-bottom: 26px; }
   .service h3{ font-size: 18px; margin-bottom: 12px; }
   .service p{ font-size: 14.5px; color: var(--ink-dim); }
 
@@ -260,7 +258,7 @@
   }
   .process-item:last-child{ border-bottom: 1px solid var(--line-soft); }
   .process-item .step{
-    font-size: 15px; color: var(--accent); letter-spacing: 0.05em; font-weight: 700;
+    font-size: 15px; color: var(--ink-dimmer); letter-spacing: 0.05em; font-weight: 700;
     padding-top: 4px;
   }
   .process-item h3{ font-size: 19px; margin-bottom: 8px; }
@@ -313,7 +311,7 @@
     background: var(--bg-alt);
     display: flex; flex-direction: column; justify-content: center;
   }
-  .contact-card .mark{ width: 44px; height: 44px; color: var(--accent); margin-bottom: 28px; }
+  .contact-card .mark{ width: 44px; height: 44px; color: var(--ink); margin-bottom: 28px; }
   .contact-card h3{ font-size: 20px; margin-bottom: 14px; }
   .contact-card p{ font-size: 15px; color: var(--ink-dim); margin-bottom: 30px; }
 
@@ -324,7 +322,7 @@
     flex-wrap: wrap; gap: 16px;
   }
   footer .f-brand{ display: flex; align-items: center; gap: 10px; color: var(--ink-dim); font-size: 14px; }
-  footer .f-brand .mark{ width: 20px; height: 20px; color: var(--accent); }
+  footer .f-brand .mark{ width: 20px; height: 20px; color: var(--ink); }
   footer small{ color: var(--ink-dimmer); font-size: 13px; }
 
   /* ---------- SCROLL REVEAL ---------- */
@@ -428,13 +426,13 @@
     </div>
     <div class="intro-figure" data-reveal>
       <svg viewBox="0 0 420 480" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="60" y="60" width="300" height="360" stroke="#2C2C2C" stroke-width="1.5" stroke-dasharray="4 4"/>
-        <rect x="90" y="120" width="120" height="90" stroke="#1A1A1A" stroke-width="2"/>
-        <rect x="230" y="120" width="100" height="150" stroke="#555555" stroke-width="1.5"/>
-        <rect x="90" y="240" width="140" height="120" stroke="#555555" stroke-width="1.5"/>
-        <line x1="60" y1="300" x2="360" y2="300" stroke="#2C2C2C" stroke-width="1"/>
-        <line x1="210" y1="60" x2="210" y2="420" stroke="#2C2C2C" stroke-width="1"/>
-        <circle cx="210" cy="300" r="4" fill="#1A1A1A"/>
+        <rect x="60" y="60" width="300" height="360" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="4 4"/>
+        <rect x="90" y="120" width="120" height="90" stroke="var(--accent)" stroke-width="2"/>
+        <rect x="230" y="120" width="100" height="150" stroke="var(--ink-dim)" stroke-width="1.5"/>
+        <rect x="90" y="240" width="140" height="120" stroke="var(--ink-dim)" stroke-width="1.5"/>
+        <line x1="60" y1="300" x2="360" y2="300" stroke="var(--ink)" stroke-width="1"/>
+        <line x1="210" y1="60" x2="210" y2="420" stroke="var(--ink)" stroke-width="1"/>
+        <circle cx="210" cy="300" r="4" fill="var(--accent)"/>
       </svg>
     </div>
   </div>
@@ -579,36 +577,7 @@
     revealEls.forEach(el => el.classList.add('is-visible'));
   }
 
-  // ---------- Scroll-driven colorization: sketch → color, synced to the hero's own scroll distance ----------
-  const SKETCH_RGB = [26, 26, 26];    // #1A1A1A pencil
-  const LIVE_RGB   = [30, 66, 130];   // #1E4282 — a chic, modern cobalt / blueprint blue
-  let siteColorProgress = 0;
-  const heroEl = document.querySelector('.hero');
-
-  function lerpChannel(a, b, t){ return Math.round(a + (b - a) * t); }
-  function currentAccentColor(t){
-    const r = lerpChannel(SKETCH_RGB[0], LIVE_RGB[0], t);
-    const g = lerpChannel(SKETCH_RGB[1], LIVE_RGB[1], t);
-    const b = lerpChannel(SKETCH_RGB[2], LIVE_RGB[2], t);
-    return `rgb(${r}, ${g}, ${b})`;
-  }
-  function updateScrollColor(){
-    const vh = window.innerHeight || 800;
-    let t = 1;
-    if (heroEl){
-      const rect = heroEl.getBoundingClientRect();
-      // 0 while the hero is fully in view, 1 exactly once it has scrolled a full viewport-height past
-      const scrolledPast = Math.min(Math.max(-rect.top, 0), vh);
-      t = scrolledPast / vh;
-    }
-    siteColorProgress = t;
-    document.documentElement.style.setProperty('--accent', currentAccentColor(t));
-  }
-  window.addEventListener('scroll', updateScrollColor, { passive:true });
-  window.addEventListener('resize', updateScrollColor);
-  updateScrollColor();
-
-  // ---------- 3D hero: Architectural Sketch Style ----------
+  // ---------- 3D hero with Dynamic Color Theme ----------
   (function initHero(){
     const canvas = document.getElementById('hero-canvas');
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -622,7 +591,6 @@
     }
 
     const scene = new THREE.Scene();
-    // رنگ مه هماهنگ با رنگ کاغذ پس‌زمینه
     scene.fog = new THREE.FogExp2(0xF9F7F1, 0.025);
 
     const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -639,42 +607,34 @@
     resize();
     window.addEventListener('resize', resize);
 
-    // رنگ‌های مداد طراحی
-    const pencilDark = 0x1A1A1A;  // خطوط پررنگ مداد
-    const pencilMid = 0x555555;   // خطوط متوسط
-    const paperWhite = 0xFFFFFF;  // رنگ کاغذ برای سطوح
+    // آرایه‌های سراسری برای مدیریت متریال‌ها
+    const allLineMaterials = [];
+    const allFaceMaterials = [];
 
     const villaGroup = new THREE.Group();
     scene.add(villaGroup);
-
-    // Materials that shift from pencil grays to full color as the page is scrolled
-    const darkMaterials = [];
-    const midMaterials = [];
 
     function addBlock(x, y, z, w, h, d, opts = {}){
       const group = new THREE.Group();
       const geo = new THREE.BoxGeometry(w, h, d);
       
-      // سطوح کاغذی با شفافیت کم
       const faceMat = new THREE.MeshBasicMaterial({ 
-        color: paperWhite, 
+        color: 0xFFFFFF, 
         transparent:true, 
         opacity: opts.opacity !== undefined ? opts.opacity : 0.6, 
         side:THREE.DoubleSide 
       });
+      allFaceMaterials.push(faceMat);
       const face = new THREE.Mesh(geo, faceMat);
       group.add(face);
 
-      // خطوط وایرفریم پررنگ شبیه مداد
-      const usedColor = opts.color || pencilDark;
+      const edges = new THREE.EdgesGeometry(geo);
       const lineMat = new THREE.LineBasicMaterial({ 
-        color: usedColor, 
+        color: 0x1A1A1A, 
         transparent:true, 
         opacity: opts.lineOpacity !== undefined ? opts.lineOpacity : 0.95 
       });
-      if (usedColor === pencilDark) darkMaterials.push(lineMat);
-      else if (usedColor === pencilMid) midMaterials.push(lineMat);
-      const edges = new THREE.EdgesGeometry(geo);
+      allLineMaterials.push(lineMat);
       const lines = new THREE.LineSegments(edges, lineMat);
       group.add(lines);
 
@@ -705,42 +665,43 @@
       }
 
       const geo = new THREE.BufferGeometry().setFromPoints(pts);
-      const mat = new THREE.LineBasicMaterial({ color: pencilMid, transparent:true, opacity: 0.7 });
-      midMaterials.push(mat);
+      const mat = new THREE.LineBasicMaterial({ color: 0x555555, transparent:true, opacity: 0.7 });
+      allLineMaterials.push(mat);
       villaGroup.add(new THREE.LineSegments(geo, mat));
+      return mat;
     }
 
     /* ---- 1. Main Ground Floor Volume ---- */
     const groundFloor = addBlock(-0.5, 1.5, -1, 7, 3, 5, { opacity: 0.7, lineOpacity: 0.9 });
     addMullions(groundFloor, 2, 4, 'z'); 
 
-    /* ---- 2. Upper Floor Cantilever Volume ---- */
-    const upperFloor = addBlock(0.5, 3.8, -0.5, 5, 2.8, 5.5, { opacity: 0.5, color: pencilDark, lineOpacity: 1.0 });
+    /* ---- 2. Upper Floor Cantilever Volume - بالاتر آورده شد ---- */
+    const upperFloor = addBlock(0.5, 4.4, -0.5, 5, 2.8, 5.5, { opacity: 0.5, lineOpacity: 1.0 });
     addMullions(upperFloor, 2, 3, 'z'); 
     
-    // Roof slab
-    addBlock(0.5, 5.27, -0.5, 5.4, 0.15, 5.9, { opacity: 0.8, color: pencilDark, lineOpacity: 0.95 });
+    const roofSlab = addBlock(0.5, 5.8, -0.5, 5.4, 0.15, 5.9, { opacity: 0.8, lineOpacity: 0.95 });
 
-    /* ---- 3. Covered Patio / Pergola ---- */
-    const patioFloor = addBlock(-1.5, 0.1, 2.5, 6, 0.1, 3, { opacity: 0.4, color: pencilMid, lineOpacity: 0.8 });
+    /* ---- 3. Covered Patio / Pergola - فاصله بیشتر از ویلا ---- */
+    const patioFloor = addBlock(-1, 0.1, 3.2, 6, 0.1, 3, { opacity: 0.4, lineOpacity: 0.8 });
     for(let i=0; i<5; i++){
-      addBlock(-1.5, 3.0, 1.0 + (i * 0.8), 5.5, 0.12, 0.15, { opacity: 0.6, color: pencilDark, lineOpacity: 0.9 });
+      addBlock(-1.5, 3.0, 2.0 + (i * 0.8), 5.5, 0.12, 0.15, { opacity: 0.6, lineOpacity: 0.9 });
     }
     const colPts = [
-      new THREE.Vector3(-4.0, 0, 4.0), new THREE.Vector3(-4.0, 3.0, 4.0),
-      new THREE.Vector3(1.0, 0, 4.0), new THREE.Vector3(1.0, 3.0, 4.0)
+      new THREE.Vector3(-4.0, 0, 5.0), new THREE.Vector3(-4.0, 3.0, 5.0),
+      new THREE.Vector3(1.0, 0, 5.0), new THREE.Vector3(1.0, 3.0, 5.0)
     ];
     const colGeo = new THREE.BufferGeometry().setFromPoints(colPts);
-    const colMat = new THREE.LineBasicMaterial({ color: pencilDark, transparent:true, opacity: 0.8 });
-    darkMaterials.push(colMat);
+    const colMat = new THREE.LineBasicMaterial({ color: 0x1A1A1A, transparent:true, opacity: 0.8 });
+    allLineMaterials.push(colMat);
     villaGroup.add(new THREE.LineSegments(colGeo, colMat));
 
     /* ---- 4. Modern Pool ---- */
     const poolW = 5, poolD = 3.5;
-    const poolX = 1.5, poolZ = 5.5, poolY = 0.05;
+    const poolX = -7, poolZ = 0, poolY = 0.05;
     
     const poolGeo = new THREE.PlaneGeometry(poolW, poolD);
     const poolMat = new THREE.MeshBasicMaterial({ color: 0xE0E0E0, transparent:true, opacity: 0.4, side: THREE.DoubleSide });
+    allFaceMaterials.push(poolMat);
     const poolMesh = new THREE.Mesh(poolGeo, poolMat);
     poolMesh.rotation.x = -Math.PI / 2;
     poolMesh.position.set(poolX, poolY, poolZ);
@@ -753,10 +714,9 @@
       new THREE.Vector3(poolX - poolW/2, poolY, poolZ + poolD/2),
       new THREE.Vector3(poolX - poolW/2, poolY, poolZ - poolD/2),
     ];
-    villaGroup.add(new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints(poolEdgePts),
-      (() => { const m = new THREE.LineBasicMaterial({ color: pencilDark, transparent:true, opacity: 1.0 }); darkMaterials.push(m); return m; })()
-    ));
+    const poolEdgeMat = new THREE.LineBasicMaterial({ color: 0x1A1A1A, transparent:true, opacity: 1.0 });
+    allLineMaterials.push(poolEdgeMat);
+    villaGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(poolEdgePts), poolEdgeMat));
 
     const stepPts = [
       new THREE.Vector3(poolX - poolW/2 + 0.5, poolY, poolZ - poolD/2 + 0.5),
@@ -764,12 +724,11 @@
       new THREE.Vector3(poolX - poolW/2 + 1.2, poolY - 0.15, poolZ - poolD/2 + 0.5),
       new THREE.Vector3(poolX - poolW/2 + 1.2, poolY - 0.3, poolZ - poolD/2 + 0.5),
     ];
-    villaGroup.add(new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints(stepPts),
-      (() => { const m = new THREE.LineBasicMaterial({ color: pencilMid, transparent:true, opacity: 0.8 }); midMaterials.push(m); return m; })()
-    ));
+    const stepMat = new THREE.LineBasicMaterial({ color: 0x555555, transparent:true, opacity: 0.8 });
+    allLineMaterials.push(stepMat);
+    villaGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(stepPts), stepMat));
 
-    /* ---- 5. Abstract Landscape (Trees) - FIXED WIREFRAME ALIGNMENT ---- */
+    /* ---- 5. Abstract Landscape (Trees) ---- */
     function addTree(x, z, scale = 1){
       const treeGroup = new THREE.Group();
       
@@ -778,38 +737,30 @@
       const foliageH = 2.5 * scale;
       const foliageY = trunkH + (foliageH / 2);
 
-      // Trunk Mesh
       const trunkGeo = new THREE.CylinderGeometry(0.15 * scale, 0.2 * scale, trunkH, 6);
       const trunkMat = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, transparent: true, opacity: 0.8 });
+      allFaceMaterials.push(trunkMat);
       const trunk = new THREE.Mesh(trunkGeo, trunkMat);
       trunk.position.y = trunkY;
       treeGroup.add(trunk);
       
-      // Trunk Wireframe (هم‌تراز با مش)
-      const trunkEdgeMat = new THREE.LineBasicMaterial({ color: pencilDark, transparent:true, opacity: 0.8 });
-      darkMaterials.push(trunkEdgeMat);
-      const trunkEdges = new THREE.LineSegments(
-        new THREE.EdgesGeometry(trunkGeo), 
-        trunkEdgeMat
-      );
-      trunkEdges.position.y = trunkY; // رفع باگ: مختصات Y دقیقاً یکسان
+      const trunkEdgeMat = new THREE.LineBasicMaterial({ color: 0x1A1A1A, transparent:true, opacity: 0.8 });
+      allLineMaterials.push(trunkEdgeMat);
+      const trunkEdges = new THREE.LineSegments(new THREE.EdgesGeometry(trunkGeo), trunkEdgeMat);
+      trunkEdges.position.y = trunkY;
       treeGroup.add(trunkEdges);
 
-      // Foliage Mesh
       const foliageGeo = new THREE.ConeGeometry(1.2 * scale, foliageH, 6);
       const foliageMat = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, transparent: true, opacity: 0.5 });
+      allFaceMaterials.push(foliageMat);
       const foliage = new THREE.Mesh(foliageGeo, foliageMat);
       foliage.position.y = foliageY;
       treeGroup.add(foliage);
 
-      // Foliage Wireframe (هم‌تراز با مش)
-      const foliageEdgeMat = new THREE.LineBasicMaterial({ color: pencilDark, transparent:true, opacity: 0.8 });
-      darkMaterials.push(foliageEdgeMat);
-      const foliageEdges = new THREE.LineSegments(
-        new THREE.EdgesGeometry(foliageGeo), 
-        foliageEdgeMat
-      );
-      foliageEdges.position.y = foliageY; // رفع باگ: مختصات Y دقیقاً یکسان
+      const foliageEdgeMat = new THREE.LineBasicMaterial({ color: 0x1A1A1A, transparent:true, opacity: 0.8 });
+      allLineMaterials.push(foliageEdgeMat);
+      const foliageEdges = new THREE.LineSegments(new THREE.EdgesGeometry(foliageGeo), foliageEdgeMat);
+      foliageEdges.position.y = foliageY;
       treeGroup.add(foliageEdges);
 
       treeGroup.position.set(x, 0, z);
@@ -822,11 +773,120 @@
     addTree(6, 2, 0.8);
 
     /* ---- 6. Ground Plane Grid ---- */
-    const grid = new THREE.GridHelper(40, 40, pencilMid, 0xCCCCCC);
+    const grid = new THREE.GridHelper(40, 40, 0x555555, 0xCCCCCC);
     grid.position.y = 0;
     grid.material.transparent = true;
     grid.material.opacity = 0.15;
     scene.add(grid);
+
+    // ---------- Color Theme System ----------
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
+    }
+
+    function hexToRgb(hex) {
+      const r = (hex >> 16) & 255;
+      const g = (hex >> 8) & 255;
+      const b = hex & 255;
+      return [r, g, b];
+    }
+
+    function rgbToHex(r, g, b) {
+      return (r << 16) | (g << 8) | b;
+    }
+
+    function lerpColor(color1, color2, t) {
+      const [r1, g1, b1] = hexToRgb(color1);
+      const [r2, g2, b2] = hexToRgb(color2);
+      const r = Math.round(lerp(r1, r2, t));
+      const g = Math.round(lerp(g1, g2, t));
+      const b = Math.round(lerp(b1, b2, t));
+      return rgbToHex(r, g, b);
+    }
+
+    const colorPalettes = [
+      { 
+        bg: 0xEEF4F9,
+        bgAlt: 0xE5EDF4,
+        ink: 0x1E3250,
+        inkDim: 0x46608A,
+        inkDimmer: 0x7088B0,
+        pencilDark: 0x1E3250,
+        pencilMid: 0x46608A,
+        fog: 0xEEF4F9,
+        faceColor: 0xD6E5F0
+      },
+      { 
+        bg: 0xF9F7F1,
+        bgAlt: 0xF0EDE5,
+        ink: 0x2C2C2C,
+        inkDim: 0x555555,
+        inkDimmer: 0x888888,
+        pencilDark: 0x1A1A1A,
+        pencilMid: 0x555555,
+        fog: 0xF9F7F1,
+        faceColor: 0xFFFFFF
+      },
+      { 
+        bg: 0xF1F9F5,
+        bgAlt: 0xE8F4EE,
+        ink: 0x1E4035,
+        inkDim: 0x3D6B5A,
+        inkDimmer: 0x5C9680,
+        pencilDark: 0x1E4035,
+        pencilMid: 0x3D6B5A,
+        fog: 0xF1F9F5,
+        faceColor: 0xD4EBE0
+      }
+    ];
+
+    function updateThemeColors(t) {
+      let palette1, palette2, localT;
+      
+      if (t < 0.5) {
+        palette1 = colorPalettes[0];
+        palette2 = colorPalettes[1];
+        localT = t * 2;
+      } else {
+        palette1 = colorPalettes[1];
+        palette2 = colorPalettes[2];
+        localT = (t - 0.5) * 2;
+      }
+
+      const bg = lerpColor(palette1.bg, palette2.bg, localT);
+      const bgAlt = lerpColor(palette1.bgAlt, palette2.bgAlt, localT);
+      const ink = lerpColor(palette1.ink, palette2.ink, localT);
+      const inkDim = lerpColor(palette1.inkDim, palette2.inkDim, localT);
+      const inkDimmer = lerpColor(palette1.inkDimmer, palette2.inkDimmer, localT);
+      const pencilDark = lerpColor(palette1.pencilDark, palette2.pencilDark, localT);
+      const pencilMid = lerpColor(palette1.pencilMid, palette2.pencilMid, localT);
+      const fog = lerpColor(palette1.fog, palette2.fog, localT);
+      const faceColor = lerpColor(palette1.faceColor, palette2.faceColor, localT);
+
+      const root = document.documentElement;
+      root.style.setProperty('--bg', '#' + bg.toString(16).padStart(6, '0'));
+      root.style.setProperty('--bg-alt', '#' + bgAlt.toString(16).padStart(6, '0'));
+      root.style.setProperty('--ink', '#' + ink.toString(16).padStart(6, '0'));
+      root.style.setProperty('--ink-dim', '#' + inkDim.toString(16).padStart(6, '0'));
+      root.style.setProperty('--ink-dimmer', '#' + inkDimmer.toString(16).padStart(6, '0'));
+      root.style.setProperty('--accent', '#' + ink.toString(16).padStart(6, '0'));
+
+      scene.fog.color.setHex(fog);
+      
+      // به‌روزرسانی تمام متریال‌های خطوط
+      allLineMaterials.forEach(mat => {
+        if (mat.opacity >= 0.9) {
+          mat.color.setHex(pencilDark);
+        } else {
+          mat.color.setHex(pencilMid);
+        }
+      });
+
+      // به‌روزرسانی تمام متریال‌های سطوح
+      allFaceMaterials.forEach(mat => {
+        mat.color.setHex(faceColor);
+      });
+    }
 
     // ---------- Interaction & Animation ----------
     let targetRotY = 0, targetRotX = 0;
@@ -839,27 +899,12 @@
 
     const clock = new THREE.Clock();
 
-    // colors the wireframe shifts between: pencil sketch → chic cobalt / blueprint blue
-    const darkSketchColor = new THREE.Color(pencilDark);
-    const darkLiveColor   = new THREE.Color(0x1E4282);
-    const midSketchColor  = new THREE.Color(pencilMid);
-    const midLiveColor    = new THREE.Color(0x4A73C4);
-    const mixedDark = new THREE.Color();
-    const mixedMid  = new THREE.Color();
-
-    function applyVillaColor(t){
-      mixedDark.copy(darkSketchColor).lerp(darkLiveColor, t);
-      mixedMid.copy(midSketchColor).lerp(midLiveColor, t);
-      for (let i = 0; i < darkMaterials.length; i++) darkMaterials[i].color.copy(mixedDark);
-      for (let i = 0; i < midMaterials.length; i++) midMaterials[i].color.copy(mixedMid);
-    }
-
     function animate(){
       requestAnimationFrame(animate);
       const t = clock.getElapsedTime();
 
       targetRotY += ((mouseX * 0.4) - targetRotY) * 0.05; 
-      targetRotX += ((mouseY * 0.25) - targetRotX) * 0.05; 
+      targetRotX += ((mouseY * 0.6) - targetRotX) * 0.05; // چرخش عمودی بیشتر
 
       villaGroup.rotation.y = targetRotY;
       villaGroup.rotation.x = targetRotX;
@@ -868,7 +913,8 @@
         villaGroup.position.y = Math.sin(t * 0.3) * 0.04;
       }
 
-      applyVillaColor(siteColorProgress);
+      const normalizedX = mouseX + 0.5;
+      updateThemeColors(normalizedX);
 
       renderer.render(scene, camera);
     }
